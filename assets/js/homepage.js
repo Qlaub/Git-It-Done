@@ -45,8 +45,9 @@ const displayRepos = function(repos, searchTerm) {
   for (index in repos) {
     repoName = repos[index].full_name;
 
-    let repoEl = document.createElement('div');
+    let repoEl = document.createElement('a');
     repoEl.classList = "list-item flex-row justify-space-between align-center";
+    repoEl.setAttribute('href', `./single-repo.html?repo=${repoName}`);
 
     let titleEl = document.createElement('span');
     titleEl.textContent = repoName;

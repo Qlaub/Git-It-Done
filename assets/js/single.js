@@ -1,5 +1,19 @@
 const issueContainerEl = document.getElementById('issues-container');
 const limitWarningEl = document.getElementById('limit-warning');
+const repoNameEl = document.querySelector('#repo-name');
+
+const getRepoName = function() {
+  // repo name
+  const queryString = document.location.search;
+  const repoName = queryString.split('=')[1];
+  if (repoName) {
+    repoNameEl.textContent = repoName;
+    getRepoIssues(repoName);
+  } else {
+    //if no repo, go back to homepage
+    document.location.replace('./index.html')
+  }
+}
 
 const getRepoIssues = function(repo) {
   apiUrl = `https://api.github.com/repos/${repo}/issues`
@@ -10,10 +24,12 @@ const getRepoIssues = function(repo) {
 
         if (response.headers.get('Link')) {
           displayWarning(repo);
+          console.log("repo has more than 30 issues");
         }
     })
   } else {
-    alert('There was a problem with your request')
+    //if unsuccessful, go to homepage
+    document.location.replace('./index.html')
   }
   }).catch(function(error) {
     alert('Error: Unable to connect to GitHub');
@@ -63,4 +79,4 @@ const displayWarning = function(repo) {
   limitWarningEl.appendChild(linkEl);
 }
 
-getRepoIssues('facebook/react');
+getRepoName();
